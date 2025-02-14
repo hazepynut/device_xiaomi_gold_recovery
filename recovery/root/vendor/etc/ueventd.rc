@@ -24,6 +24,9 @@
 /dev/block/by-name/md1img    0640    root    system
 /dev/block/by-name/md1img_a  0640    root    system
 /dev/block/by-name/md1img_b  0640    root    system
+/dev/block/by-name/modem     0640    root    system
+/dev/block/by-name/modem_a   0640    root    system
+/dev/block/by-name/modem_b   0640    root    system
 /dev/block/by-name/md1dsp    0660    root    system
 /dev/block/by-name/boot_para 0640    root    system
 
@@ -63,7 +66,7 @@
 # NFC
 /dev/msr3110              0666   root       root
 /dev/mt6605               0660   nfc        radio
-/dev/st21nfc              0666   nfc        radio
+/dev/st21nfc              0660   nfc        radio
 /dev/st54spi              0660   secure_element        secure_element
 
 # MTK BTIF driver
@@ -94,6 +97,9 @@
 
 # DRM node
 /dev/dri/card0            0660   system     system
+
+#sensor
+/dev/hf_manager        0660    system    system
 
 # add the read write right of ttyUSB*
 /dev/bus/usb/*     	  0660   root       usb
@@ -185,3 +191,7 @@
 
 #MTK In-House TEE
 /dev/ttyACM0              0660   radio      radio
+
+
+#widevine driver node
+/dev/drm_wv               0660   media      system
