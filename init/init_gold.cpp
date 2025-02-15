@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <vector>
+#include <unordered_map>
 #include <android-base/properties.h>
 #include <android-base/logging.h>
 #include <sys/resource.h>
