@@ -14,12 +14,27 @@
 # limitations under the License.
 #
 
+# Inherit from those products. Most specific first.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
+
+# Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+
+# Enable project quotas and casefolding for emulated storage without sdcardfs
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
+
+# Inherit some common TWRP stuff.
+$(call inherit-product, vendor/twrp/config/common.mk)
+
 # Device specific configs
 $(call inherit-product, device/xiaomi/gold/device.mk)
 
 # Device identifier
 PRODUCT_DEVICE := gold
 PRODUCT_NAME := twrp_gold
-PRODUCT_BRAND := Redmi
-PRODUCT_MODEL := 2312DRAABG
+PRODUCT_BRAND := Xiaomi
 PRODUCT_MANUFACTURER := Xiaomi
+PRODUCT_RELEASE_NAME := gold
+
+PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
