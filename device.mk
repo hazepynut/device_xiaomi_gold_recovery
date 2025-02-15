@@ -5,6 +5,9 @@
 #
 
 # A/B
+AB_OTA_UPDATER := true
+AB_OTA_PARTITIONS += system boot vbmeta_system odm_dlkm product vbmeta_vendor vendor_dlkm system_ext vendor_boot vendor
+
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
     POSTINSTALL_PATH_system=system/bin/otapreopt_script \
@@ -16,8 +19,6 @@ PRODUCT_PACKAGES += \
     update_engine \
     update_verifier \
     update_engine_sideload
-
-AB_OTA_PARTITIONS += system boot vbmeta_system odm_dlkm product vbmeta_vendor vendor_dlkm system_ext vendor_boot vendor
 
 # Dynamic Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
