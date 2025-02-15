@@ -4,45 +4,20 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# Enable Virtual A/B OTA
-$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch_with_vendor_ramdisk.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
-
-ENABLE_VIRTUAL_AB := true
-AB_OTA_UPDATER := true
-
-AB_OTA_PARTITIONS += \
-    boot \
-    dtbo \
-    lk \
-    odm \
-    odm_dlkm \
-    product \
-    system \
-    system_ext \
-    vbmeta_system \
-    vbmeta_vendor \
-    vendor \
-    vendor_boot \
-    vendor_dlkm
-
+# A/B
 AB_OTA_POSTINSTALL_CONFIG += \
-    RUN_POSTINSTALL_vendor=true \
-    POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
-    FILESYSTEM_TYPE_vendor=ext4 \
-    POSTINSTALL_OPTIONAL_vendor=true
+    RUN_POSTINSTALL_system=true \
+    POSTINSTALL_PATH_system=system/bin/otapreopt_script \
+    FILESYSTEM_TYPE_system=ext4 \
+    POSTINSTALL_OPTIONAL_system=true
 
 PRODUCT_PACKAGES += \
     otapreopt_script \
-    cppreopts.sh
-
-PRODUCT_PACKAGES += \
     update_engine \
-    update_engine_sideload \
-    update_verifier
+    update_verifier \
+    update_engine_sideload
 
-PRODUCT_PACKAGES_DEBUG += \
-    update_engine_client
+AB_OTA_PARTITIONS += system boot vbmeta_system odm_dlkm product vbmeta_vendor vendor_dlkm system_ext vendor_boot vendor
 
 # Dynamic Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
@@ -64,7 +39,7 @@ PRODUCT_PACKAGES += \
 
 # Fastbootd
 PRODUCT_PACKAGES += \
-    android.hardware.fastboot@1.1-impl-mock \
+    android.hardware.fastboot@1.0-impl-mock \
     fastbootd
 
 # Keymint
@@ -73,27 +48,12 @@ PRODUCT_PACKAGES += \
     android.hardware.security.secureclock \
     android.hardware.security.sharedsecret
 
-# create_pl_dev
-PRODUCT_PACKAGES += \
-    create_pl_dev \
-    create_pl_dev.recovery
-
 # libinit_gold
 PRODUCT_PACKAGES += \
     libinit_gold \
     libinit_gold.recovery
 
-# Additional Libraries
-TARGET_RECOVERY_DEVICE_MODULES += \
-    libkeymaster4 \
-    libkeymaster41 \
-    libpuresoftkeymasterdevice
-
-RECOVERY_LIBRARY_SOURCE_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster41.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so
-
+# Additional libs
 TARGET_RECOVERY_DEVICE_MODULES += \
     libion \
     libxml2

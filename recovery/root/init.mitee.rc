@@ -1,17 +1,29 @@
-service tee-supplicant /vendor/bin/tee-supplicant
+service miteelog /system/bin/miteelog
     class core
     user root
     group root
     disabled
     seclabel u:r:recovery:s0
 
-service miteelog /vendor/bin/miteelog
+on post-fs-data
+    mkdir /data/vendor/mitee
+    chmod 0755 /data/vendor/mitee
+    chown system system /data/vendor/mitee
+    mkdir /data/vendor/thh
+    chmod 0755 /data/vendor/thh
+    chown system system /data/vendor/thh
+    write /proc/bootprof "init miteelog"
+    start miteelog
+
+# For MTK DRM integration:
+service tee-supplicant /system/bin/tee-supplicant
+    class core
     user root
-    group root
+    group root secure_element nfc
+    capabilities SYS_RAWIO
     disabled
     seclabel u:r:recovery:s0
 
-# tee-supplicant
 on fs
     write /proc/bootprof "init tee-supplicant"
    # set SELinux security contexts on upgrade or policy update
@@ -29,19 +41,9 @@ on fs
     chown system system /dev/mmcblk0rpmb
     chown system system /dev/0:0:0:49476
     chown system system /dev/ufs-bsg0
+    enable vendor.keymint-mitee
     start tee-supplicant
     mkdir /mnt/vendor/persist/data 0755 system system
     mkdir /mnt/vendor/persist/fdsd 0755 system system
     setprop vendor.teefs_state ready
     setprop ro.hardware.gatekeeper mitee
-
-# miteelog
-on post-fs-data
-    mkdir /data/vendor/mitee
-    chmod 0755 /data/vendor/mitee
-    chown system system /data/vendor/mitee
-    mkdir /data/vendor/thh
-    chmod 0755 /data/vendor/thh
-    chown system system /data/vendor/thh
-    write /proc/bootprof "init miteelog"
-    start miteelog
